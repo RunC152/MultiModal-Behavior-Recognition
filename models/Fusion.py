@@ -18,8 +18,6 @@ class CrossModalAttention(nn.Module):
 
         self.rel_scale = nn.Parameter(torch.tensor(0.5))  # 初始值可以小一些
 
-        self.out = nn.Linear(hidden_dim * 2, feature_dim)
-
     def forward(self, rgb_feat, ir_feat, w_rgb, w_ir):
 
         tokens = torch.stack([rgb_feat, ir_feat], dim=1)
@@ -43,8 +41,6 @@ class CrossModalAttention(nn.Module):
         fused = torch.matmul(attn, V)
 
         fused = fused.flatten(start_dim=1)
-
-        fused = self.out(fused)
 
         return fused
 
