@@ -169,7 +169,7 @@ class MultiModalModel(nn.Module):
             hidden_dim=hidden_dim,
         )
 
-    def forward(self, rgb, ir):
+    def forward(self, rgb, ir, return_weights=False):
         # ── Step 0: extract fast frames for pixel quality ──
         # rgb: [rgb_slow, rgb_fast], ir: [ir_slow, ir_fast]
         rgb_fast = rgb[1]                      # [B, 3, T_fast, H, W]
@@ -199,4 +199,6 @@ class MultiModalModel(nn.Module):
         # ── Step 5: classify ──
         out = self.classifier(fused)                      # [B, num_classes]
 
+        if return_weights:
+            return out, w_rgb, w_ir
         return out

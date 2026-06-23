@@ -56,7 +56,7 @@ class NTUDataset(Dataset):
             label_map[i] = a - 1  # 标签从 0 开始
         return label_map
 
-    def _get_transform(self, num_frames, is_rgb=True, is_slow=True):
+    def _get_transform(self, num_frames, is_rgb=True):
         if is_rgb:
             mean = [0.45, 0.45, 0.45]
             std  = [0.225, 0.225, 0.225]
@@ -95,15 +95,17 @@ class NTUDataset(Dataset):
             rgb_clip = rgb_video.get_clip(0, duration)
             ir_clip  = ir_video.get_clip(0, duration)
 
-            # 变换
-            transform_slow = self._get_transform(self.slow_num_frames, is_slow=True)
-            transform_fast = self._get_transform(self.fast_num_frames, is_slow=False)
+            # 变换 — RGB 和 IR 使用各自的归一化参数
+            rgb_transform_slow = self._get_transform(self.slow_num_frames, is_rgb=True)
+            rgb_transform_fast = self._get_transform(self.fast_num_frames, is_rgb=True)
+            ir_transform_slow  = self._get_transform(self.slow_num_frames, is_rgb=False)
+            ir_transform_fast  = self._get_transform(self.fast_num_frames, is_rgb=False)
 
             # 3. slow / fast 两路采样
-            rgb_slow = transform_slow(rgb_clip)["video"]
-            rgb_fast = transform_fast(rgb_clip)["video"]
-            ir_slow  = transform_slow(ir_clip)["video"]
-            ir_fast  = transform_fast(ir_clip)["video"]
+            rgb_slow = rgb_transform_slow(rgb_clip)["video"]
+            rgb_fast = rgb_transform_fast(rgb_clip)["video"]
+            ir_slow  = ir_transform_slow(ir_clip)["video"]
+            ir_fast  = ir_transform_fast(ir_clip)["video"]
 
             return {
                 "rgb_slow": rgb_slow,

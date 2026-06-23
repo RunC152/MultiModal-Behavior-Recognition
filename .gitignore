@@ -28,3 +28,6 @@ Thumbs.db
 *.bak
 *.tmp
 *.swpweights/*.pyth
+checkpoints/
+tensorboard/
+eval_results/
