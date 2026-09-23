@@ -218,6 +218,9 @@ def main():
         slow_num_frames=config['data']['slow_num_frames'],
         fast_num_frames=config['data']['fast_num_frames'],
         side_size=config['data']['side_size'],
+        tracks_rgb_path=config['data'].get('tracks_rgb_path'),
+        tracks_ir_path=config['data'].get('tracks_ir_path'),
+        crop_size=config['data'].get('crop_size', 160),
     )
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size

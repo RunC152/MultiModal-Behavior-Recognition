@@ -31,7 +31,10 @@ def create_dataloaders(config):
         ir_dir=config['data']['ir_dir'],
         slow_num_frames=config['data']['slow_num_frames'],
         fast_num_frames=config['data']['fast_num_frames'],
-        side_size=config['data']['side_size']
+        side_size=config['data']['side_size'],
+        tracks_rgb_path=config['data'].get('tracks_rgb_path'),
+        tracks_ir_path=config['data'].get('tracks_ir_path'),
+        crop_size=config['data'].get('crop_size', 160),
     )
 
     # Split dataset into training and validation sets

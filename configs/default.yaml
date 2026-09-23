@@ -1,12 +1,16 @@
 # configs/default.yaml
 data:
-  rgb_dir: "datasets/NTU/original"   # rgb path
-  ir_dir: "datasets/NTU/original_ir"     # ir path
+  rgb_dir: "datasets/NTU/original"
+  ir_dir: "datasets/NTU/original_ir"
   batch_size: 12
   num_workers: 2
   slow_num_frames: 12
   fast_num_frames: 48
   side_size: 256
+  # YOLO person tracks for cropping (comment out for full-frame mode)
+  tracks_rgb_path: "tracks_rgb.json"
+  tracks_ir_path: "tracks_ir.json"
+  crop_size: 160  # X3D-S input size
 
 model:
   type: "x3d"
@@ -19,7 +23,7 @@ model:
   hidden_dim: 512
 
 train:
-  epochs: 80
+  epochs: 120
   lr: 0.0005
   weight_decay: 0.0001
   warmup_epochs: 3
@@ -27,6 +31,7 @@ train:
   use_amp: true
   seed: 42
   save_dir: "checkpoints"
+  resume_path: "checkpoints/best_model.pth"
   log_interval: 10
   eval_interval: 1
 
